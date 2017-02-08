@@ -90,8 +90,9 @@ if isinstance(output_dict,list): # all datasources
        for tbl in ds['table']:
             ws_url = ds_link + '/table/' + uquote(tbl) + '/variables/_order'
             args.ws = ws_url
-            #print '[REQUEST]: ' + str(args)
             res_output = do_rest(args)
+
+            # print '[REQUEST]: ' + str(args)
             #print '[RESULT]: ' + str(res_output) + '\n\n'
 
 elif isinstance(output_dict,dict): # a specific datasource
@@ -100,6 +101,7 @@ elif isinstance(output_dict,dict): # a specific datasource
     for tbl in ds['table']:
         ws_url = ds_link + '/table/'+ uquote(tbl)+'/variables/_order'
         args.ws = ws_url
-        print '[REQUEST]: '+str(args)
         res_output = do_rest(args)
-        print '[RESULT]: '+str(res_output) + '\n\n'
+
+        # print '[REQUEST]: '+str(args)
+        #print '[RESULT]: '+str(res_output) + '\n\n'
