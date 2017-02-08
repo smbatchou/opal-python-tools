@@ -48,49 +48,57 @@ def do_rest(args):
 
 
 
-
+#EX1: opal rest -o https://opal-demo.obiba.org -u administrator -p password -m PUT /datasource/HELIAD/table/XXXXXX/variables/_order
 args = Namespace(
     accept=None, content_type=None,json=False,
     method='GET',
     opal='https://opal-demo.obiba.org',
     password='password', user='administrator',
     verbose=False,
-    ws='/datasource/HELIAD'
+    ws='/datasource/HELIAD'  #
 )
 
 
-# opal rest -o https://opal-demo.obiba.org -u administrator -p password -m PUT /datasource/CLS/table/Wave1/variables/_order
+#EX2:  FIX ORDER OF ALL VARIABLES FOR ALL DATASOURCES
+#args = Namespace(
+#    accept=None, content_type=None,json=False,
+#    method='PUT',
+#    opal='https://opal-demo.obiba.org',
+#    password='password', user='administrator',
+#    verbose=False,
+#    ws='/datasource'
+#)
 
 
-
-print(args)
 
 output_str = do_rest(args)
 
-print (output_str)
+#print (output_str)
 
-print args.ws
+
 
 
 output_dict = json.loads(output_str)
 
-print '\n'
+# do the PUT
+args.method = 'PUT'
 
-if isinstance(output_dict,list):
+if isinstance(output_dict,list): # all datasources
+
     for ds in output_dict :
        ds_link = ds['link']
        for tbl in ds['table']:
-            ws_url = ds_link + '/table/' + uquote(tbl) + '/variables'
+            ws_url = ds_link + '/table/' + uquote(tbl) + '/variables/_order'
             args.ws = ws_url
-            print '[REQUEST]: ' + str(args)
+            #print '[REQUEST]: ' + str(args)
             res_output = do_rest(args)
-            print '[RESULT]: ' + str(res_output) + '\n\n'
+            #print '[RESULT]: ' + str(res_output) + '\n\n'
 
-elif isinstance(output_dict,dict):
+elif isinstance(output_dict,dict): # a specific datasource
     ds = output_dict
     ds_link = args.ws
     for tbl in ds['table']:
-        ws_url = ds_link + '/table/'+ uquote(tbl)+'/variables'
+        ws_url = ds_link + '/table/'+ uquote(tbl)+'/variables/_order'
         args.ws = ws_url
         print '[REQUEST]: '+str(args)
         res_output = do_rest(args)
