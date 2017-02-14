@@ -62,11 +62,11 @@ args = Namespace(
 #EX2:  FIX ORDER OF ALL VARIABLES FOR ALL DATASOURCES
 #args = Namespace(
 #    accept=None, content_type=None,json=False,
-#    method='PUT',
+#    method='GET',
 #    opal='https://opal-demo.obiba.org',
 #    password='password', user='administrator',
 #    verbose=False,
-#    ws='/datasource'
+#    ws='/datasources'
 #)
 
 
