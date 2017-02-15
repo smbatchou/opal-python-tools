@@ -47,7 +47,6 @@ def do_rest(args):
         sys.exit(2)
 
 
-
 def get_args():
     """
     Add command specific options
@@ -70,10 +69,7 @@ args = get_args()
 
 output_str = do_rest(args)
 
-
 output_dict = json.loads(output_str)
-
-print output_dict
 
 
 # do the PUT
