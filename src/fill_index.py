@@ -49,25 +49,25 @@ def do_rest(args):
 
 
 #EX1: opal rest -o https://opal-demo.obiba.org -u administrator -p password -m PUT /datasource/HELIAD/table/XXXXXX/variables/_order
-args = Namespace(
-    accept=None, content_type=None,json=False,
-    method='GET',
-    opal='https://opal-demo.obiba.org',
-    password='password', user='administrator',
-    verbose=False,
-    ws='/datasource/HELIAD'  #
-)
-
-
-#EX2:  FIX ORDER OF ALL VARIABLES FOR ALL DATASOURCES
 #args = Namespace(
 #    accept=None, content_type=None,json=False,
 #    method='GET',
 #    opal='https://opal-demo.obiba.org',
 #    password='password', user='administrator',
 #    verbose=False,
-#    ws='/datasources'
+#    ws='/datasource/HELIAD'  #
 #)
+
+
+#EX2:  FIX ORDER OF ALL VARIABLES FOR ALL DATASOURCES
+args = Namespace(
+    accept=None, content_type=None,json=False,
+    method='GET',
+    opal='https://nightly-opal.obiba.org',
+    password='password', user='administrator',
+    verbose=False,
+    ws='/datasources'
+)
 
 
 
