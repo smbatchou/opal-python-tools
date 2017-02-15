@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-from argparse import Namespace
+import argparse
 import opal.core
 import sys
 import pycurl
@@ -48,43 +48,39 @@ def do_rest(args):
 
 
 
-#EX1: opal rest -o https://opal-demo.obiba.org -u administrator -p password -m PUT /datasource/HELIAD/table/XXXXXX/variables/_order
-args = Namespace(
-    accept=None, content_type=None,json=False,
-    method='GET',
-    opal='https://opal-demo.obiba.org',
-    password='password', user='administrator',
-    verbose=False,
-    ws='/datasource/HELIAD'  #
-)
+def get_args():
+    """
+    Add command specific options
+    """
+    # initiate parser and fill args
+    parser = argparse.ArgumentParser(description='Opal fill_index command line.')
+    parser.add_argument('--opal', '-o', required=True, help='Opal server base url')
+    parser.add_argument('--user', '-u', required=True, help='User name')
+    parser.add_argument('--password', '-p', required=True, help='User password')
+    parser.add_argument('ws', help='Web service path, for instance: /datasource/xxx/table/yyy/variable/vvv',default='/datasources')
+    args = parser.parse_args()
+    args.json = True
+    args.method = 'GET'
+    args.verbose = False
+    return args
 
 
-#EX2:  FIX ORDER OF ALL VARIABLES FOR ALL DATASOURCES
-#args = Namespace(
-#    accept=None, content_type=None,json=False,
-#    method='GET',
-#    opal='https://opal-demo.obiba.org',
-#    password='password', user='administrator',
-#    verbose=False,
-#    ws='/datasources'
-#)
-
-
+#get all args
+args = get_args()
 
 output_str = do_rest(args)
-
-#print (output_str)
-
-
 
 
 output_dict = json.loads(output_str)
 
+print output_dict
+
+
 # do the PUT
 args.method = 'PUT'
 
-if isinstance(output_dict,list): # all datasources
 
+if isinstance(output_dict,list): # all datasources
     for ds in output_dict :
        ds_link = ds['link']
        for tbl in ds['table']:
@@ -92,8 +88,6 @@ if isinstance(output_dict,list): # all datasources
             args.ws = ws_url
             res_output = do_rest(args)
 
-            # print '[REQUEST]: ' + str(args)
-            #print '[RESULT]: ' + str(res_output) + '\n\n'
 
 elif isinstance(output_dict,dict): # a specific datasource
     ds = output_dict
@@ -103,5 +97,3 @@ elif isinstance(output_dict,dict): # a specific datasource
         args.ws = ws_url
         res_output = do_rest(args)
 
-        # print '[REQUEST]: '+str(args)
-        #print '[RESULT]: '+str(res_output) + '\n\n'
