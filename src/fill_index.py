@@ -27,13 +27,13 @@ def do_rest(args):
 
         # format response
         res = response.content
-        if args.json:
-            res = response.pretty_json()
-        elif args.method in ['OPTIONS']:
-            res = response.headers['Allow']
 
-        # output to stdout
-        #print res
+        if args.json and args.method in 'GET':
+           res = response.pretty_json()
+           print res
+        elif args.method in ['PUT']:
+           res = response.headers['Date']
+
 
         # return the result
         return res
@@ -58,7 +58,7 @@ def get_args():
     parser.add_argument('--password', '-p', required=True, help='User password')
     parser.add_argument('ws', help='Web service path, for instance: /datasource/xxx/table/yyy/variable/vvv',default='/datasources')
     args = parser.parse_args()
-    args.json = True
+    args.json = False
     args.method = 'GET'
     args.verbose = False
     return args
@@ -77,7 +77,7 @@ args.method = 'PUT'
 
 
 if isinstance(output_dict,list): # all datasources
-    for ds in output_dict :
+    for ds in output_dict:
        ds_link = ds['link']
        for tbl in ds['table']:
             ws_url = ds_link + '/table/' + uquote(tbl) + '/variables/_order'
@@ -93,3 +93,4 @@ elif isinstance(output_dict,dict): # a specific datasource
         args.ws = ws_url
         res_output = do_rest(args)
 
+print 'Updated '+str(res_output)+'\n'
